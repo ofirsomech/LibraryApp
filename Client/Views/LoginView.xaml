@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.Views"
              xmlns:vm="clr-namespace:Client.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
 
@@ -37,15 +38,21 @@
         <!--password-->
         <StackPanel Grid.Row="3" Margin="0,2.333">
             <TextBlock  Text="Password" HorizontalAlignment="Center" />
-            <TextBox x:Name="txtPassword" Text="{Binding Password , Mode=TwoWay}" Width="200"  HorizontalAlignment="Center" />
+            <PasswordBox x:Name="txtPassword"  Width="200"  HorizontalAlignment="Center">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PasswordChanged">
+                        <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}" CommandParameter="{Binding ElementName=txtPassword}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </PasswordBox>
         </StackPanel>
 
         <!--btn login-->
         <StackPanel Grid.Row="4" Margin="0,2.667,0,1" Grid.RowSpan="2">
-            <Button x:Name="btnLogin" Content="Login" Command="{Binding LoginCommand}"/>
+            <Button x:Name="btnLogin" Content="Login" IsEnabled="{Binding CanClick ,Mode=TwoWay}" Command="{Binding LoginCommand , Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="5" Margin="0,2,0,0">
-            <Button x:Name="btnRegister"  Content="Register" Command="{Binding RegisterCommand}"/>
+            <Button x:Name="btnRegister"  Content="Register" IsEnabled="{Binding CanClick ,Mode=TwoWay}" Command="{Binding RegisterCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

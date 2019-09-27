@@ -15,12 +15,11 @@ namespace Server.Controllers
         LibraryDbContext context = new LibraryDbContext();
         // GET api/values
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> Get()
+        public  ActionResult<IEnumerable<string>> Get()
         {
             try
             {
-                //context.Users.Add(new User { Username = "test", Password = "1234", Type = UserTypes.Admin });
-                //   await context.SaveChangesAsync();
+
             }
             catch (Exception e)
             {

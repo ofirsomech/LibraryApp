@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,12 @@ namespace Client.Tools
         {
             Application.Current.MainWindow.Content = new Frame();
 
-            NavigateTool.Nav(new TestPage());
+            NavigateTool.Nav(new MainLibraryPage());
+        }
+
+        public static void DisconectedNav()
+        {
+            Application.Current.MainWindow.Content = new LoginView();
         }
     }
 }

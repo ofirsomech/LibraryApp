@@ -1,5 +1,6 @@
 ﻿using Client.Models;
 using Client.Tools;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Models.Models;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ using System.Windows.Navigation;
 
 namespace Client.ViewModels
 {
-    class LoginViewModel
+    class LoginViewModel : ViewModelBase
     {
         private string url = "https://localhost:44384/api/user";
 
@@ -28,29 +29,58 @@ namespace Client.ViewModels
         public string Password { get; set; }
 
 
+        private bool _canClick;
+        public bool CanClick
+        {
+            get
+            {
+                return _canClick;
+            }
+            set
+            {
+                _canClick = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         public ICommand LoginCommand { get; set; }
         public ICommand RegisterCommand { get; set; }
+        public RelayCommand<PasswordBox> PasswordChangedCommand { get; set; }
+
+
 
         public LoginViewModel()
         {
             client = new HttpClient();
-            LoginCommand = new RelayCommand(Login);
-            RegisterCommand = new RelayCommand(Register);
+            CanClick = true;
+            LoginCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Login);
+            RegisterCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Register);
+            PasswordChangedCommand = new RelayCommand<PasswordBox>(ExecutePasswordChangedCommand);
         }
-        public async void Login()
+
+        private async void Login()
         {
             try
             {
+                CanClick = false;
                 var json = GetUser(TextUser, Password);
                 var response = await PostUser("login", json);
+                var userJson = response.Content.ReadAsStringAsync().Result;
+
                 if (response.IsSuccessStatusCode)
                 {
+
                     MainWindow page = new MainWindow();
+                    Consts.ActiveUser = JsonConvert.DeserializeObject<User>(userJson);
                     NavigateTool.NavFromLogin();
                 }
                 else
+                {
                     MessageBox.Show("You entered wrong username/password!\nPlease try again.");
+                    CanClick = true;
+                }
+
             }
             catch (Exception err)
             {
@@ -59,21 +89,33 @@ namespace Client.ViewModels
             }
         }
 
+        private void ExecutePasswordChangedCommand(PasswordBox obj)
+        {
+            if (obj != null)
+                Password = obj.Password;
+        }
+
+
         public async void Register()
         {
             try
             {
-               var json = GetUser(TextUser, Password);
+                CanClick = false;
+                var json = GetUser(TextUser, Password);
 
                 var response = await PostUser("create", json);
-                    
-                
+
+
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("The account was created ! Please login with your new details");
+                    CanClick = true;
                 }
                 else
+                {
                     MessageBox.Show("Please choose another username");
+                    CanClick = true;
+                }
 
             }
             catch (Exception err)
@@ -85,14 +127,14 @@ namespace Client.ViewModels
         }
 
 
-         private string GetUser(string username, string password)
+        private string GetUser(string username, string password)
         {
             var user = new User { Username = TextUser, Password = Password, Type = UserTypes.User };
             var json = JsonConvert.SerializeObject(user);
             return json;
         }
 
-        async Task<HttpResponseMessage> PostUser(string method , string json)
+        async Task<HttpResponseMessage> PostUser(string method, string json)
         {
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _userService.GetUsersAsync();
+
         }
 
         // GET: api/User/5
@@ -51,6 +53,7 @@ namespace Server.Controllers
             try
             {
                 var user = JsonConvert.DeserializeObject<User>(json);
+                user.Password = Encryptor.MD5Hash(user.Password);
                 var success = await _userService.CreateUserAsync(user);
                 if (success)
                     return Ok();
@@ -71,6 +74,7 @@ namespace Server.Controllers
             try
             {
                 var tmpUser = JsonConvert.DeserializeObject<User>(json);
+                tmpUser.Password = Encryptor.MD5Hash(tmpUser.Password);
                 var user = await _userService.LoginAsync(tmpUser.Username, tmpUser.Password);
                 if (user != null)
                     return Ok(user);

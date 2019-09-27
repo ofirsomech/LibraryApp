@@ -11,8 +11,6 @@ namespace Server.Services.Interfaces
         Task<List<User>> GetUsersAsync();
         Task<User> GetUserAsync(int id);
         Task<bool> CreateUserAsync(User user);
-
-
         Task<User> LoginAsync(string username , string password);
 
 

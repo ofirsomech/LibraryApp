@@ -1,0 +1,70 @@
+﻿<Page x:Class="Client.Views.MainLibraryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Client.Views"
+      xmlns:vm="clr-namespace:Client.ViewModels"
+      mc:Ignorable="d" 
+      Title="The Best Library" Height="670" Width="860"
+      >
+
+    <Page.DataContext>
+        <vm:MainLibraryViewModel/>
+    </Page.DataContext>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="180*"/>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="57*"/>
+            <RowDefinition Height="48*"/>
+            <RowDefinition Height="97*"/>
+
+        </Grid.RowDefinitions>
+        <ListView ItemsSource="{Binding items}" SelectedItem="{Binding SelectedIndex , Mode=TwoWay}" Name="lst" Grid.Column="0"  Grid.RowSpan="7"    >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Serial Number" DisplayMemberBinding="{Binding ISBN}"/>
+                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Month" DisplayMemberBinding="{Binding Month}"/>
+                    <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Promotion" DisplayMemberBinding="{Binding PriceAfter}"/>
+                    <GridViewColumn Header="Print Date" DisplayMemberBinding="{Binding PrintDate ,  StringFormat='yyyy-MM-dd'}"/>
+                    <GridViewColumn Header="Copies" DisplayMemberBinding="{Binding Copies}"/>
+
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding categoryBook}"/>
+                    <!--<GridViewColumn Header="Type" DisplayMemberBinding="{Binding , Converter={StaticResource typeConverter}}"/>-->
+
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="0" Grid.Column="1">
+        <TextBlock Name="lbl" Text="The Best Library" FontWeight="UltraLight"  FontStyle="Normal" Grid.Column="1" HorizontalAlignment="Center" FontSize="37" TextDecorations="Underline"  Width="250" Margin="17.333,0,17.333,114" />
+            <TextBlock Text="Hello"  HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding ActiveUser.Username}" HorizontalAlignment="Center" />
+        </StackPanel>
+        <Button HorizontalAlignment="Stretch" Content="Add Book" Command="{Binding OpenCreateBookCommand}"  Grid.Column="1" Grid.Row="1" />
+        <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" Content="Add Jurnal" Command="{Binding OpenCreateJornalCommand}" />
+        <Button Visibility="{Binding EditVisibility}" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Content="Edit" />
+        <Button Visibility="{Binding DeleteVisibility}" Content="Remove (Book/Jurnal)" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" Command="{Binding DeleteCommand}" />
+        <Button  Content="Search" Grid.Row="5" Grid.Column="5" HorizontalAlignment="Stretch" Command="{Binding SearchCommand}" />
+        <StackPanel Grid.Row="7" Grid.Column="7">
+            <Button Visibility="{Binding ShowDisconnect , Mode=TwoWay}" Content="Disconected" Command="{Binding DisconectedCommand}" HorizontalAlignment="Stretch"/>
+            <Button Command="{Binding TestVisibilityCommand}"  Content="About" HorizontalAlignment="Stretch" />
+        </StackPanel>
+
+    </Grid>
+</Page>

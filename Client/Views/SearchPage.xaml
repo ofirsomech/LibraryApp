@@ -1,0 +1,31 @@
+﻿<Page x:Class="Client.Views.SearchPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:Client.ViewModels"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      Title="FilteringSample" Height="300" Width="390">
+
+    <Page.DataContext>
+        <vm:SearchViewModel />
+    </Page.DataContext>
+
+    <StackPanel Margin="10">
+        <TextBox  Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" Margin="0,0,0,10" Name="txtFilter" />
+        <RadioButton Command="{Binding Path=SearchTypeCommand}" CommandParameter="{Binding ElementName=searchByName, Path=Content}" Name="searchByName" GroupName="searchBy"   Content="By Name" Height="20" Margin="158,0,115.333,0"/>
+        <RadioButton Command="{Binding Path=SearchTypeCommand}" CommandParameter="{Binding ElementName=searchBySN, Path=Content}" Name="searchBySN" GroupName="searchBy" Content="By ISBN" Height="20" Margin="158,0,108.333,0"/>
+        <ListView Name="lstSearch" Margin="0,13,0.333,-0.333" Height="129" ItemsSource="{Binding items}" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Serial Number" DisplayMemberBinding="{Binding ISBN}"/>
+                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Print Date" DisplayMemberBinding="{Binding PrintDate}"/>
+                    <GridViewColumn Header="Copies" DisplayMemberBinding="{Binding Copies}"/>
+
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding categoryBook}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </StackPanel>
+</Page>

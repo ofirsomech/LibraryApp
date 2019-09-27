@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Models.Models
 {
     public class Jornal : AbstractItem
     {
-        // public CategoryJurnal categoryJurnal { get; set; }
+        [Required]
         public string Month { get; set; }
 
         public Jornal()
