@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServerApi.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace ServerApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     Type = table.Column<string>(nullable: true),
                     ISBN = table.Column<Guid>(nullable: false),
                     Publisher = table.Column<string>(nullable: true),
@@ -24,6 +24,7 @@ namespace ServerApi.Migrations
                     Price = table.Column<double>(nullable: false),
                     PriceAfter = table.Column<double>(nullable: false),
                     Discount = table.Column<int>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
                     categoryBook = table.Column<int>(nullable: false),
                     Copies = table.Column<int>(nullable: false)
                 },
@@ -38,7 +39,7 @@ namespace ServerApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     Type = table.Column<string>(nullable: true),
                     ISBN = table.Column<Guid>(nullable: false),
                     Publisher = table.Column<string>(nullable: true),
@@ -48,7 +49,8 @@ namespace ServerApi.Migrations
                     Price = table.Column<double>(nullable: false),
                     PriceAfter = table.Column<double>(nullable: false),
                     Discount = table.Column<int>(nullable: false),
-                    Month = table.Column<string>(nullable: true)
+                    IsActive = table.Column<bool>(nullable: false),
+                    Month = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

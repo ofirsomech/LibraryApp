@@ -56,7 +56,7 @@ namespace Client.ViewModels
             if(response.IsSuccessStatusCode)
             NavigateTool.Nav(new MainLibraryPage());
             else
-                MessageBox.Show("Cant create new book , try again later!");
+                MessageBox.Show(response.Content.ReadAsStringAsync().Result);
         }
 
     }

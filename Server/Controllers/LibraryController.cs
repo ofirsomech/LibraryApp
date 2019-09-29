@@ -27,8 +27,8 @@ namespace Server.Controllers
         {
             try
             {
-            var books = await _libraryService.GetBooksItemsAsync();
-            return Ok(books);
+                var books = await _libraryService.GetBooksItemsAsync();
+                return Ok(books);
             }
             catch (Exception err)
             {
@@ -76,6 +76,18 @@ namespace Server.Controllers
             try
             {
                 var book = JsonConvert.DeserializeObject<Book>(json);
+                if (book.Price == 0 && book.Copies == 0)
+                {
+                    throw new Exception("You need enter a valid price and copies. Pleate try again!");
+                }
+                if (book.Price == 0)
+                {
+                    throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
+                }
+                if (book.Copies == 0)
+                {
+                    throw new Exception("You need enter a valid copies(more than 1). Pleate try again!");
+                }
                 var success = await _libraryService.CreateBookAsync(book);
                 if (success)
                     return Ok();
@@ -86,7 +98,7 @@ namespace Server.Controllers
             catch (Exception err)
             {
                 Console.WriteLine(err);
-                return NotFound();
+                return NotFound(err.Message);
             }
         }
 
@@ -97,6 +109,10 @@ namespace Server.Controllers
             try
             {
                 var jornal = JsonConvert.DeserializeObject<Jornal>(json);
+                if (jornal.Price == 0)
+                {
+                    throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
+                }
                 var success = await _libraryService.CreateJornalAsync(jornal);
                 if (success)
                     return Ok();

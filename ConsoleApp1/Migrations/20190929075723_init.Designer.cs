@@ -10,8 +10,8 @@ using Models.Models;
 namespace ServerApi.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20190924114926_add-required-to-month")]
-    partial class addrequiredtomonth
+    [Migration("20190929075723_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,8 +43,7 @@ namespace ServerApi.Migrations
 
                     b.Property<DateTime>("PrintDate");
 
-                    b.Property<string>("Publisher")
-                        .IsRequired();
+                    b.Property<string>("Publisher");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -83,8 +82,7 @@ namespace ServerApi.Migrations
 
                     b.Property<DateTime>("PrintDate");
 
-                    b.Property<string>("Publisher")
-                        .IsRequired();
+                    b.Property<string>("Publisher");
 
                     b.Property<string>("Title")
                         .IsRequired();
