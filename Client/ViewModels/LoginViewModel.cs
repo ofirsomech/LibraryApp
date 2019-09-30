@@ -53,8 +53,8 @@ namespace Client.ViewModels
         public LoginViewModel()
         {
             client = new HttpClient();
-            TextUser = "admin";
-            Password = "1234";
+            //TextUser = "admin";
+            //Password = "1234";
             CanClick = true;
             LoginCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Login);
             RegisterCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Register);
@@ -65,6 +65,13 @@ namespace Client.ViewModels
         {
             try
             {
+                if (String.IsNullOrEmpty(TextUser) || String.IsNullOrEmpty(Password))
+                    throw new Exception("Please type your username and password!");
+
+
+
+
+
                 CanClick = false;
                 var json = GetUser(TextUser, Password);
                 var response = await PostUser("login", json);
