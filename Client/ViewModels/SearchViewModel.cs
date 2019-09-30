@@ -65,8 +65,10 @@ namespace Client.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private async void OnPropertyChange(string propertyname)
+        private async void OnPropertyChange(string textSearch)
         {
+            try
+            {
             if (Name == "By Name")
             {
                 var lst = new List<AbstractItem>();
@@ -76,7 +78,11 @@ namespace Client.ViewModels
                     items.Clear();
                     return;
                 }
-                items = await GetItemsByName(Client, items, propertyname);
+                if (String.IsNullOrEmpty(textSearch))
+                {
+                    return;
+                }
+                items = await GetItemsByName(Client, items, textSearch);
             }
             else if(Name =="By ISBN")
             {
@@ -86,13 +92,23 @@ namespace Client.ViewModels
                     items.Clear();
                     return;
                 }
-                items = await GetItemsByISBN(Client, items, propertyname);
+                if (String.IsNullOrEmpty(textSearch))
+                {
+                    return;
+                }
+                items = await GetItemsByISBN(Client, items, textSearch);
+            }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
             }
 
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
-            }
+            //if (PropertyChanged != null)
+            //{
+            //    PropertyChanged(this, new PropertyChangedEventArgs(textSearch));
+            //}
         }
 
         private async Task<ObservableCollection<AbstractItem>> GetItemsByISBN(HttpClient client, ObservableCollection<AbstractItem> items, string propertyname)

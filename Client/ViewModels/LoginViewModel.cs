@@ -80,7 +80,6 @@ namespace Client.ViewModels
                 if (response.IsSuccessStatusCode)
                 {
 
-                    MainWindow page = new MainWindow();
                     Consts.ActiveUser = JsonConvert.DeserializeObject<User>(userJson);
                     NavigateTool.NavFromLogin();
                 }
@@ -138,7 +137,7 @@ namespace Client.ViewModels
 
         private string GetUser(string username, string password)
         {
-            var user = new User { Username = TextUser, Password = Password, Type = UserTypes.User };
+            var user = new LoginModel { Username = TextUser, Password = Password, Type = Models.UserTypes.User };
             var json = JsonConvert.SerializeObject(user);
             return json;
         }

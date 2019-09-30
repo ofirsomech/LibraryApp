@@ -76,7 +76,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Collection\ItemsCollection.cs" />
     <Compile Include="Convertors\SampleMultiValueConverter.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -91,7 +90,6 @@
     <Compile Include="Tools\Consts.cs" />
     <Compile Include="Tools\NavigateTool.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
-    <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CreateBookViewModel.cs" />
     <Compile Include="ViewModels\CreateJornalViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

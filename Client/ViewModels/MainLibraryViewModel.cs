@@ -1,5 +1,4 @@
-﻿using Client.Collection;
-using Client.Tools;
+﻿using Client.Tools;
 using Client.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -20,7 +19,6 @@ namespace Client.ViewModels
     class MainLibraryViewModel : ViewModelBase
     {
         public HttpClient Client { get; set; }
-        ItemsCollection icollection = new ItemsCollection();
 
         public Visibility EditVisibility { get; set; } = Visibility.Visible;
         public Visibility DeleteVisibility { get; set; } = Visibility.Visible;
@@ -172,24 +170,5 @@ namespace Client.ViewModels
             if (SelectedIndex.GetType() == typeof(Jornal))
                 NavigateTool.Nav(new CreateJornalView());
         }
-
-
-
-
-        public List<AbstractItem> searchListByTitle(string strSearchByName)
-        {
-
-            return icollection.searchListByTitle(strSearchByName);
-        }
-        public List<AbstractItem> SearchBySN(Guid sn)
-        {
-            return icollection.SearchBySN(sn);
-        }
-        public ObservableCollection<AbstractItem> GetAllItems()
-        {
-            return items;
-        }
-
-
     }
 }
