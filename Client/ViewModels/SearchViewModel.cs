@@ -97,7 +97,7 @@ namespace Client.ViewModels
 
         private async Task<ObservableCollection<AbstractItem>> GetItemsByISBN(HttpClient client, ObservableCollection<AbstractItem> items, string propertyname)
         {
-            items = await Consts.GetAllAvialiabeItems(client, items, "book", "jornal");
+            items = await Consts.GetAllAvialiabeItems(client, items, "book", "jornal" , "printDate");
             ObservableCollection<AbstractItem> toReturn = new ObservableCollection<AbstractItem>();
 
             foreach (var item in items)
@@ -111,7 +111,7 @@ namespace Client.ViewModels
 
         private async Task<ObservableCollection<AbstractItem>> GetItemsByName(HttpClient client, ObservableCollection<AbstractItem> items, string propertyname)
         {
-            items = await Consts.GetAllAvialiabeItems(client, items, "book", "jornal");
+            items = await Consts.GetAllAvialiabeItems(client, items, "book", "jornal" , "printDate");
             ObservableCollection<AbstractItem> toReturn = new ObservableCollection<AbstractItem>();
 
             foreach (var item in items)

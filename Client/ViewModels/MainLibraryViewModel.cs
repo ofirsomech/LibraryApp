@@ -68,6 +68,10 @@ namespace Client.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand DisconectedCommand { get; set; }
+        public ICommand OrderByPriceCommand { get; set; }
+        public ICommand OrderByTitleCommand { get; set; }
+        public ICommand OrderByPublisherCommand { get; set; }
+        public ICommand OrderByPrintDateCommand { get; set; }
 
         public MainLibraryViewModel()
         {
@@ -85,13 +89,34 @@ namespace Client.ViewModels
             DeleteCommand = new GalaSoft.MvvmLight.Command.RelayCommand(DeleteItemHandler);
             DisconectedCommand = new GalaSoft.MvvmLight.Command.RelayCommand(DisconectedHandler);
             SearchCommand = new GalaSoft.MvvmLight.Command.RelayCommand(SearchItemsHandler);
+            OrderByPriceCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPrice);
+            OrderByTitleCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByTitle);
+            OrderByPublisherCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPublisher);
+            OrderByPrintDateCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPrintDate);
         }
 
         private async void GetAllAbstractItems()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal");
-
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "printDate");
         }
+        private async void OrderByPrice()
+        {
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "price");
+        }
+        private async void OrderByPublisher()
+        {
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "publisher");
+        }
+        private async void OrderByTitle()
+        {
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "title");
+        }
+        private async void OrderByPrintDate()
+        {
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+        }
+
+
 
         private void DisconectedHandler()
         {
@@ -110,7 +135,7 @@ namespace Client.ViewModels
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"{SelectedIndex.Title} was deleted!");
-                    items =await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal");
+                    items =await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "printDate");
                 }
                 else
                     MessageBox.Show("Cant delete it , try again!");

@@ -19,7 +19,7 @@ namespace Client.Tools
 
 
 
-        public static async Task<ObservableCollection<AbstractItem>> GetAllAvialiabeItems(HttpClient client,ObservableCollection<AbstractItem> items , string type1 , string type2)
+        public static async Task<ObservableCollection<AbstractItem>> GetAllAvialiabeItems(HttpClient client, ObservableCollection<AbstractItem> items, string type1, string type2, string orderBy)
         {
             var response = await Consts.GetItemsFromApi(client, type1);
             var res = await response.Content.ReadAsStringAsync();
@@ -33,8 +33,14 @@ namespace Client.Tools
             var listItems = new List<AbstractItem>();
             listItems.AddRange(listBooks);
             listItems.AddRange(listJornals);
-            items = new ObservableCollection<AbstractItem>(listItems);
-
+            if (orderBy == "printDate")
+                items = new ObservableCollection<AbstractItem>(listItems.OrderByDescending(i => i.PrintDate));
+            if (orderBy == "price")
+                items = new ObservableCollection<AbstractItem>(listItems.OrderByDescending(i => i.Price));
+            if (orderBy == "title")
+                items = new ObservableCollection<AbstractItem>(listItems.OrderByDescending(i => i.Title));
+            if (orderBy == "publisher")
+                items = new ObservableCollection<AbstractItem>(listItems.OrderByDescending(i => i.Publisher));
             return items;
         }
 

@@ -21,17 +21,17 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="180*"/>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="35*"/>
-            <RowDefinition Height="57*"/>
-            <RowDefinition Height="48*"/>
-            <RowDefinition Height="97*"/>
+            <RowDefinition Height="223*"/>
+            <RowDefinition Height="55*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="81*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="120*"/>
 
         </Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding items}" SelectedItem="{Binding SelectedIndex , Mode=TwoWay}" Name="lst" Grid.Column="0"  Grid.RowSpan="7"    >
+        <ListView ItemsSource="{Binding items}" SelectedItem="{Binding SelectedIndex , Mode=TwoWay}" Name="lst" Grid.Column="0"  Grid.RowSpan="5" Margin="0,0,0.333,0.333"    >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Serial Number" DisplayMemberBinding="{Binding ISBN}"/>
@@ -51,18 +51,24 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel Grid.Row="0" Grid.Column="1">
-        <TextBlock Name="lbl" Text="The Best Library" FontWeight="UltraLight"  FontStyle="Normal" Grid.Column="1" HorizontalAlignment="Center" FontSize="37" TextDecorations="Underline"  Width="250" Margin="17.333,0,17.333,114" />
-            <TextBlock Text="Hello"  HorizontalAlignment="Center"/>
-            <TextBlock Text="{Binding ActiveUser.Username}" HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="573,0,0,0.667">
+            <TextBlock Name="lbl" Text="The Best Library" FontWeight="UltraLight"  FontStyle="Normal" Grid.Column="1" HorizontalAlignment="Center" FontSize="37" TextDecorations="Underline"  Width="250"  />
+            <TextBlock Foreground="Green" FontSize="20" Text="Hello"  HorizontalAlignment="Center"/>
+            <TextBlock Foreground="Green" FontSize="20" Text="{Binding ActiveUser.Username}" HorizontalAlignment="Center" />
         </StackPanel>
-        <Button HorizontalAlignment="Stretch" Content="Add Book" Command="{Binding OpenCreateBookCommand}"  Grid.Column="1" Grid.Row="1" />
-        <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" Content="Add Jurnal" Command="{Binding OpenCreateJornalCommand}" />
-        <Button Visibility="{Binding EditVisibility}" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Content="Edit" />
-        <Button Visibility="{Binding DeleteVisibility}" Content="Remove (Book/Jurnal)" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" Command="{Binding DeleteCommand}" />
-        <Button  Content="Search" Grid.Row="5" Grid.Column="5" HorizontalAlignment="Stretch" Command="{Binding SearchCommand}" />
-        <StackPanel Grid.Row="7" Grid.Column="7">
+        <Button HorizontalAlignment="Stretch" Content="Add Book" Command="{Binding OpenCreateBookCommand}" Grid.Row="1" Grid.ColumnSpan="2" Margin="573,0.333,0,0" />
+        <Button Grid.Row="1" HorizontalAlignment="Stretch" Content="Add Jurnal" Command="{Binding OpenCreateJornalCommand}" Grid.ColumnSpan="2" Margin="573,54.333,0,49.667" Grid.RowSpan="3" />
+        <Button Visibility="{Binding EditVisibility}" Grid.Row="3" HorizontalAlignment="Stretch" Command="{Binding EditCommand}" Content="Edit" Grid.ColumnSpan="2" Margin="573,0.333,0,42.333" Grid.RowSpan="2" />
+        <Button Visibility="{Binding DeleteVisibility}" Content="Remove (Book/Jurnal)" Grid.Row="4" HorizontalAlignment="Stretch" Command="{Binding DeleteCommand}" Grid.ColumnSpan="2" Margin="573,0.333,0,0.333" />
+        <Button  Content="Search" Grid.Row="4" HorizontalAlignment="Stretch" Command="{Binding SearchCommand}" Grid.ColumnSpan="2" Margin="573,42.333,0,49" Grid.RowSpan="3" />
+        <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Margin="573,0,0,0">
             <Button Visibility="{Binding ShowDisconnect , Mode=TwoWay}" Content="Disconected" Command="{Binding DisconectedCommand}" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="4" Margin="0,42.333,0.333,49" Grid.RowSpan="3" >
+            <Button Command="{Binding OrderByPriceCommand}" Content="Order By Price" />
+            <Button Command="{Binding OrderByTitleCommand}" Content="Order By Title" />
+            <Button Command="{Binding OrderByPublisherCommand}" Content="Order By Publisher" />
+            <Button Command="{Binding OrderByPrintDateCommand}" Content="Order By Print Date" />
         </StackPanel>
 
     </Grid>
