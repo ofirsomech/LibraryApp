@@ -53,6 +53,8 @@ namespace Client.ViewModels
         public LoginViewModel()
         {
             client = new HttpClient();
+            TextUser = "admin";
+            Password = "1234";
             CanClick = true;
             LoginCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Login);
             RegisterCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Register);

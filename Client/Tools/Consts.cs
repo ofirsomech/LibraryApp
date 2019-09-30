@@ -1,4 +1,5 @@
-﻿using Models.Models;
+﻿using Client.Views;
+using Models.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,12 @@ namespace Client.Tools
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             return await client.PostAsync($"{url}/{method}", json, new JsonMediaTypeFormatter());
         }
+        public static async Task<HttpResponseMessage> EditItem(HttpClient client, string method, string json)
+        {
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            return await client.PutAsync($"{url}/{method}", json, new JsonMediaTypeFormatter());
+        }
 
         public static async Task<HttpResponseMessage> GetItemsFromApi(HttpClient client, string method)
         {
@@ -60,6 +67,11 @@ namespace Client.Tools
             return await client.PutAsync($"{url}/{guid}", json, new JsonMediaTypeFormatter());
         }
 
+
+        public static void Close()
+        {
+            NavigateTool.Nav(new MainLibraryPage());
+        }
 
 
     }

@@ -16,7 +16,7 @@
     
 
     <Grid  Height="350" Width="525" Background="Bisque">
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="10,5,0,0" Name="textBlockHeading" Text="Registration:" VerticalAlignment="Top" Width="110"  FontSize="17" FontStretch="ExtraCondensed"/>
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="10,5,0,0" Name="textBlockHeading" Text="{Binding HeaderText}" VerticalAlignment="Top" Width="110"  FontSize="17" FontStretch="ExtraCondensed"/>
         <!--Button as a Link button using style-->
 
         <!--end Button as a Link button using style-->
@@ -48,9 +48,8 @@
             <TextBox Text="{Binding Book.Publisher , Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="27.5,107,0,0" Name="txtPublisher" VerticalAlignment="Top" Width="222" Grid.Column="1" />
             <TextBox Text="{Binding Book.Price , Mode=TwoWay}" Height="23" HorizontalAlignment="Left"  Margin="27.5,136,0,0" Name="txtPrice" VerticalAlignment="Top" Width="222"  Grid.Column="1" />
             <TextBox Text="{Binding Book.Copies , Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="28,0,0,50" Name="txtCopies" VerticalAlignment="Bottom"  Width="222" Grid.Column="1" />
-            <Button Command="{Binding CreateBookCommand}" Content="Submit" Height="23" HorizontalAlignment="Left" Margin="28,229,0,0" Name="Submit" VerticalAlignment="Top" Width="70"  Grid.Column="1" />
-            <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="104,229,0,0" Name="button2" VerticalAlignment="Top" Width="70"  Grid.Column="1"  />
-            <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,229,60.333,0" Name="button3" VerticalAlignment="Top" Width="70"  Grid.Column="1"/>
+            <Button Command="{Binding BookCommand}" Content="Submit" Height="23" HorizontalAlignment="Left" Margin="28,229,0,0" Name="Submit" VerticalAlignment="Top" Width="70"  Grid.Column="1" />
+            <Button Command="{Binding CloseCommand}" Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,229,60.333,0" Name="button3" VerticalAlignment="Top" Width="70"  Grid.Column="1"/>
             <TextBlock Height="23" HorizontalAlignment="Left" Margin="66,163,0,0"  Text="Discount" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="2" />
             <TextBox Text="{Binding Book.Discount , Mode=TwoWay}"  Height="23" HorizontalAlignment="Left" Margin="27,163,0,0" x:Name="txtDiscount" VerticalAlignment="Top" Width="222"  Grid.Column="1" />
         </Grid>

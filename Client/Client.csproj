@@ -91,7 +91,6 @@
     <Compile Include="Tools\Consts.cs" />
     <Compile Include="Tools\NavigateTool.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
-    <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CreateBookViewModel.cs" />
     <Compile Include="ViewModels\CreateJornalViewModel.cs" />

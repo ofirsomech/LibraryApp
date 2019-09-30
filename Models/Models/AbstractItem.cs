@@ -10,7 +10,7 @@ namespace Models.Models
     {
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } 
-        [Required]
+        [Required(ErrorMessage = "Required field!")]
         public string Title { get; set; }
         public string Type { get; set; } 
         public Guid ISBN { get; set; } = Guid.NewGuid();

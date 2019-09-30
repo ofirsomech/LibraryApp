@@ -63,7 +63,6 @@
         <Button  Content="Search" Grid.Row="5" Grid.Column="5" HorizontalAlignment="Stretch" Command="{Binding SearchCommand}" />
         <StackPanel Grid.Row="7" Grid.Column="7">
             <Button Visibility="{Binding ShowDisconnect , Mode=TwoWay}" Content="Disconected" Command="{Binding DisconectedCommand}" HorizontalAlignment="Stretch"/>
-            <Button Command="{Binding TestVisibilityCommand}"  Content="About" HorizontalAlignment="Stretch" />
         </StackPanel>
 
     </Grid>

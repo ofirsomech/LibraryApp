@@ -18,41 +18,85 @@ namespace Client.ViewModels
 {
     class CreateJornalViewModel
     {
+        public string HeaderText { get; set; }
+
         public Jornal Jornal { get; set; }
 
         public ObservableCollection<CategoryBook> BooksCategories { get; set; } = new ObservableCollection<CategoryBook>(Enum.GetValues(typeof(CategoryBook)).Cast<CategoryBook>().ToList());
 
-        public ICommand CreateJornalCommand { get; set; }
+        public ICommand JornalCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
+
+        public HttpClient Client { get; set; } = new HttpClient();
 
         public CreateJornalViewModel()
         {
-            if (MainLibraryViewModel.SelectedIndex != null)
+            if (MainLibraryViewModel.SelectedIndex.Id != 0)
+            {
+                HeaderText = $"Edit {MainLibraryViewModel.SelectedIndex.Title}";
                 Jornal = (Jornal)MainLibraryViewModel.SelectedIndex;
+                JornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditJornalHandler);
+            }
             else
+            {
+                HeaderText = "Create Jornal";
                 Jornal = new Jornal();
-            Jornal.PrintDate = DateTime.Now;
-            CreateJornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateJornalHandler);
+                Jornal.PrintDate = DateTime.Now;
+                JornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateJornalHandler);
+            }
+            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Consts.Close);
         }
 
-        public CreateJornalViewModel(Jornal jornal)
+
+        void CreateJornalHandler()
         {
-            Jornal = jornal;
+            SubmitHenler("create/jornal");
         }
 
-
-        async void CreateJornalHandler()
+        void EditJornalHandler()
         {
-            HttpClient client = new HttpClient();
-            var jornal = this.Jornal;
-            jornal.SetDiscount();
-            var json = JsonConvert.SerializeObject(jornal);
-
-            var response = await Consts.PostItem(client, "create/jornal", json);
-            if (response.IsSuccessStatusCode)
-                NavigateTool.Nav(new MainLibraryPage());
-            else
-                MessageBox.Show("Cant create jornal , try again!");
+            SubmitHenler("edit/jornal");
         }
 
+
+        private async void SubmitHenler(string method)
+        {
+            try
+            {
+                var jornal = this.Jornal;
+                if (jornal.Price == 0 && String.IsNullOrEmpty(jornal.Title) && String.IsNullOrWhiteSpace(jornal.Title) && String.IsNullOrEmpty(jornal.Month) && String.IsNullOrWhiteSpace(jornal.Month))
+                {
+                    throw new Exception("You need enter a valid title , price and month. Pleate try again!");
+                }
+                if (String.IsNullOrEmpty(jornal.Title) && String.IsNullOrWhiteSpace(jornal.Title))
+                {
+                    throw new Exception("You need enter a valid title. Pleate try again!");
+                }
+                if (String.IsNullOrEmpty(jornal.Month) && String.IsNullOrWhiteSpace(jornal.Month))
+                {
+                    throw new Exception("You need enter a valid month. Pleate try again!");
+                }
+                if (jornal.Price == 0)
+                {
+                    throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
+                }
+                jornal.SetDiscount(jornal.Discount);
+                var json = JsonConvert.SerializeObject(jornal);
+                HttpResponseMessage response = new HttpResponseMessage();
+                if (method == "edit/jornal")
+                    response = await Consts.EditItem(Client, method, json);
+                else if (method == "create/jornal")
+                    response = await Consts.PostItem(Client, method, json);
+
+                if (response.IsSuccessStatusCode)
+                    NavigateTool.Nav(new MainLibraryPage());
+                else
+                    MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+        }
     }
 }

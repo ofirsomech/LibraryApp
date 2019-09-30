@@ -1,5 +1,6 @@
 ﻿using Client.Tools;
 using Client.Views;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Models.Models;
 using Newtonsoft.Json;
@@ -16,48 +17,103 @@ using System.Windows.Input;
 
 namespace Client.ViewModels
 {
-    class CreateBookViewModel
+    class CreateBookViewModel : ViewModelBase
     {
+        public string HeaderText { get; set; }
         public Book Book { get; set; }
+
         public HttpClient Client { get; set; }
 
         public ObservableCollection<CategoryBook> BooksCategories { get; set; } = new ObservableCollection<CategoryBook>(Enum.GetValues(typeof(CategoryBook)).Cast<CategoryBook>().ToList());
 
-        public ICommand CreateBookCommand { get; set; }
+        public ICommand BookCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
+
 
         public CreateBookViewModel()
         {
             Client = new HttpClient();
-            if(MainLibraryViewModel.SelectedIndex != null)
+            if (MainLibraryViewModel.SelectedIndex.Id != 0)
             {
+                HeaderText = $"Edit {MainLibraryViewModel.SelectedIndex.Title}";
                 Book = (Book)MainLibraryViewModel.SelectedIndex;
+                BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditBookHendler);
+
             }
-            else
+            else if (MainLibraryViewModel.SelectedIndex.Id == 0)
             {
+                HeaderText = $"Create Book";
+
                 Book = new Book();
+                Book.PrintDate = DateTime.Now;
+                BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateBookHandler);
             }
-            CreateBookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateBookHandler);
-            Book.PrintDate = DateTime.Now;
-        }
-        public CreateBookViewModel(Book book)
-        {
-            Book = book;
+            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Consts.Close);
         }
 
 
-
-        async void CreateBookHandler()
+        private void CreateBookHandler()
         {
-            var book = this.Book;
-            book.SetDiscount();
-            var json = JsonConvert.SerializeObject(book);
+            SubmitHenler("create/book");
+        }
 
-            var response =await Consts.PostItem(Client, "create/book", json);
-            if(response.IsSuccessStatusCode)
-            NavigateTool.Nav(new MainLibraryPage());
-            else
-                MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+        private void EditBookHendler()
+        {
+            SubmitHenler($"edit/book");
+            MainLibraryViewModel.SelectedIndex = null;
+        }
+
+        private async void SubmitHenler(string method)
+        {
+            try
+            {
+                var book = this.Book;
+                if (book.Price == 0 &&
+                    book.Copies == 0 &&
+                    String.IsNullOrWhiteSpace(book.Title) && String.IsNullOrEmpty(book.Title) &&
+                    String.IsNullOrWhiteSpace(book.Publisher) && String.IsNullOrEmpty(book.Publisher))
+                {
+                    throw new Exception("You need enter a valid title, publisher , price and copies. Pleate try again!");
+                }
+                if (String.IsNullOrWhiteSpace(book.Title) && String.IsNullOrEmpty(book.Title))
+                {
+                    throw new Exception("You need enter a valid title");
+
+                }
+                if (String.IsNullOrWhiteSpace(book.Publisher) && String.IsNullOrEmpty(book.Publisher))
+                {
+                    throw new Exception("You need enter a valid publisher name. Pleate try again!");
+                }
+                if (book.Price == 0)
+                {
+                    throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
+                }
+                if (book.Copies == 0)
+                {
+                    throw new Exception("You need enter a valid copies(more than 1). Pleate try again!");
+                }
+                book.SetDiscount(book.Discount);
+                var json = JsonConvert.SerializeObject(book);
+                HttpResponseMessage response = new HttpResponseMessage();
+                if (method == "edit/book")
+                    response = await Consts.EditItem(Client, method, json);
+                else if (method == "create/book")
+                    response = await Consts.PostItem(Client, method, json);
+
+                if (response.IsSuccessStatusCode)
+                    NavigateTool.Nav(new MainLibraryPage());
+                else
+                    MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+
+            }
+            catch (Exception err)
+            {
+
+                MessageBox.Show(err.Message);
+            }
         }
 
     }
+
 }
+
