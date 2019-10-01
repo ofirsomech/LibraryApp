@@ -68,6 +68,15 @@ namespace Client.ViewModels
                 if (String.IsNullOrEmpty(TextUser) || String.IsNullOrEmpty(Password))
                     throw new Exception("Please type your username and password!");
 
+                if(TextUser.Length < 3)
+                {
+                    throw new Exception("Username must contains 3 letters and more!");
+                }
+                if (Password.Length < 4)
+                {
+                    throw new Exception("Password must contains 4 digits and more!");
+                }
+
 
 
 

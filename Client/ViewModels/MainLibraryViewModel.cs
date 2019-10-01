@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace Client.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Client.ViewModels
         public HttpClient Client { get; set; }
 
         public Visibility EditVisibility { get; set; } = Visibility.Visible;
-        public Visibility DeleteVisibility { get; set; } = Visibility.Visible;
+        public string DeleteAndRentText { get; set; }
 
 
 
@@ -58,7 +59,9 @@ namespace Client.ViewModels
                 RaisePropertyChanged();
             }
         }
-
+        /// <summary>
+        /// Remove (Book/Jurnal)
+        /// </summary>
 
         public ICommand OpenCreateBookCommand { get; set; }
         public ICommand OpenCreateJornalCommand { get; set; }
@@ -76,38 +79,43 @@ namespace Client.ViewModels
             Client = new HttpClient();
             GetAllAbstractItems();
             ActiveUser = Consts.ActiveUser;
-            if(ActiveUser.Type == UserTypes.User)
+            if (ActiveUser.Type == UserTypes.User)
             {
                 EditVisibility = Visibility.Collapsed;
-                DeleteVisibility = Visibility.Collapsed;
+                //DeleteVisibility = Visibility.Collapsed;
+                DeleteAndRentText = "Buy";
             }
-            OpenCreateBookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateBookHendler);
-            OpenCreateJornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateJornalHendler);
-            EditCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditItemHandler);
-            DeleteCommand = new GalaSoft.MvvmLight.Command.RelayCommand(DeleteItemHandler);
-            DisconectedCommand = new GalaSoft.MvvmLight.Command.RelayCommand(DisconectedHandler);
-            SearchCommand = new GalaSoft.MvvmLight.Command.RelayCommand(SearchItemsHandler);
-            OrderByPriceCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPrice);
-            OrderByTitleCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByTitle);
-            OrderByPublisherCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPublisher);
-            OrderByPrintDateCommand = new GalaSoft.MvvmLight.Command.RelayCommand(OrderByPrintDate);
+            else if (ActiveUser.Type == UserTypes.Admin)
+            {
+                DeleteAndRentText = "Delete";
+            }
+            OpenCreateBookCommand = new RelayCommand(CreateBookHendler);
+            OpenCreateJornalCommand = new RelayCommand(CreateJornalHendler);
+            EditCommand = new RelayCommand(EditItemHandler);
+            DeleteCommand = new RelayCommand(DeleteItemHandler);
+            DisconectedCommand = new RelayCommand(DisconectedHandler);
+            SearchCommand = new RelayCommand(SearchItemsHandler);
+            OrderByPriceCommand = new RelayCommand(OrderByPrice);
+            OrderByTitleCommand = new RelayCommand(OrderByTitle);
+            OrderByPublisherCommand = new RelayCommand(OrderByPublisher);
+            OrderByPrintDateCommand = new RelayCommand(OrderByPrintDate);
         }
 
         private async void GetAllAbstractItems()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "printDate");
+            items = await Tools.Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
         }
         private async void OrderByPrice()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "price");
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "price");
         }
         private async void OrderByPublisher()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "publisher");
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "publisher");
         }
         private async void OrderByTitle()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "title");
+            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "title");
         }
         private async void OrderByPrintDate()
         {
@@ -125,24 +133,30 @@ namespace Client.ViewModels
         private async void DeleteItemHandler()
         {
 
-            if (SelectedIndex != null)
+            try
             {
+                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
+                {
+                    throw new Exception("You need select item before delete!");
+                }
+
                 var json = JsonConvert.SerializeObject(SelectedIndex);
 
                 var response = await Consts.DeleteItemAsync(Client, SelectedIndex.ISBN, json);
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"{SelectedIndex.Title} was deleted!");
-                    items =await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal" , "printDate");
+                    items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
                 }
                 else
                     MessageBox.Show("Cant delete it , try again!");
-
             }
-            else
+            catch (Exception err)
             {
-                MessageBox.Show("You need to choose item !");
+
+                MessageBox.Show(err.Message);
             }
+
 
 
         }
@@ -165,10 +179,22 @@ namespace Client.ViewModels
 
         private void EditItemHandler()
         {
-            if (SelectedIndex.GetType() == typeof(Book))
-                NavigateTool.Nav(new CreateBook());
-            if (SelectedIndex.GetType() == typeof(Jornal))
-                NavigateTool.Nav(new CreateJornalView());
+            try
+            {
+                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
+                {
+                    throw new Exception("You need select item before edit!");
+                }
+                if (SelectedIndex.GetType() == typeof(Book))
+                    NavigateTool.Nav(new CreateBook());
+                if (SelectedIndex.GetType() == typeof(Jornal))
+                    NavigateTool.Nav(new CreateJornalView());
+            }
+            catch (Exception err)
+            {
+
+                MessageBox.Show(err.Message);
+            }
         }
     }
 }

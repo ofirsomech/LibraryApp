@@ -92,6 +92,11 @@ namespace Client.ViewModels
                 {
                     throw new Exception("You need enter a valid copies(more than 1). Pleate try again!");
                 }
+                if (book.Discount<0 || book.Discount > 100) 
+                {
+                    throw new Exception("You need enter a valid discount(between 0-100). Pleate try again!");
+
+                }
                 book.SetDiscount(book.Discount);
                 var json = JsonConvert.SerializeObject(book);
                 HttpResponseMessage response = new HttpResponseMessage();
