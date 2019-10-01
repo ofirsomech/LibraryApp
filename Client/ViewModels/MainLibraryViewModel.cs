@@ -1,4 +1,6 @@
-﻿using Client.Tools;
+﻿using BL.Services.Classes;
+using BL.Services.Interfaces;
+using Client.Tools;
 using Client.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -20,10 +22,13 @@ namespace Client.ViewModels
     class MainLibraryViewModel : ViewModelBase
     {
         public HttpClient Client { get; set; }
+        public IManageTime ManageTime { get; set; }
 
         public Visibility EditVisibility { get; set; } = Visibility.Visible;
         public string DeleteAndRentText { get; set; }
 
+        public string GreetingNameText { get; set; }
+        public string GreetingTimeText { get; set; }
 
 
         private ObservableCollection<AbstractItem> _items;
@@ -77,8 +82,11 @@ namespace Client.ViewModels
         public MainLibraryViewModel()
         {
             Client = new HttpClient();
+            ManageTime = new ManageTime();
             GetAllAbstractItems();
             ActiveUser = Consts.ActiveUser;
+            GreetingNameText = $"Hello , {ActiveUser.Username}";
+            GreetingTimeText = ManageTime.GetGreeting();
             if (ActiveUser.Type == UserTypes.User)
             {
                 EditVisibility = Visibility.Collapsed;

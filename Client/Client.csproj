@@ -182,9 +182,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BL\BL.csproj">
-      <Project>{1803b1da-f256-4ee6-9b5f-96b752d65198}</Project>
-      <Name>BL</Name>
+    <ProjectReference Include="..\BL-Client\BL-Client.csproj">
+      <Project>{4efdd29d-12bd-4612-866c-0cdf6898a217}</Project>
+      <Name>BL-Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{8db2e4b0-1244-4a84-9bbb-10840e69dadd}</Project>
