@@ -16,6 +16,7 @@ namespace Server.Services.Interfaces
         Task<AbstractItem> DeleteItemAsync(Guid guid);
         Task<bool> EditJornal(Jornal jornal);
         Task<bool> EditBook(Book editedBook);
+        Task<AbstractItem> BuyItem(Guid guid);
 
 
     }

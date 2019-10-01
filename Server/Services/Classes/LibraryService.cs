@@ -164,5 +164,27 @@ namespace Server.Services.Classes
                 return false;
             }
         }
+
+        public async Task<AbstractItem> BuyItem(Guid guid)
+        {
+            Book book = await Context.Books.FirstOrDefaultAsync(b => b.ISBN == guid);
+            if(book != null)
+            {
+                book.Copies--;
+                if (book.Copies == 0)
+                    book.IsActive = false;
+
+                await Context.SaveChangesAsync();
+                return book;
+            }
+            Jornal jornal = await Context.Jornals.FirstOrDefaultAsync(j => j.ISBN == guid);
+            if(jornal != null)
+            {
+                jornal.IsActive = false;
+                await Context.SaveChangesAsync();
+                return jornal;
+            }
+            return null;
+        }
     }
 }

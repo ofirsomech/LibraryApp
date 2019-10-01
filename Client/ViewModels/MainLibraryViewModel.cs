@@ -71,7 +71,7 @@ namespace Client.ViewModels
         public ICommand OpenCreateBookCommand { get; set; }
         public ICommand OpenCreateJornalCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
+        public ICommand SelectemItemCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand DisconectedCommand { get; set; }
         public ICommand OrderByPriceCommand { get; set; }
@@ -92,15 +92,18 @@ namespace Client.ViewModels
                 EditVisibility = Visibility.Collapsed;
                 //DeleteVisibility = Visibility.Collapsed;
                 DeleteAndRentText = "Buy";
+                SelectemItemCommand = new RelayCommand(BuyItemHandler);
+
             }
             else if (ActiveUser.Type == UserTypes.Admin)
             {
                 DeleteAndRentText = "Delete";
+                SelectemItemCommand = new RelayCommand(DeleteItemHandler);
+
             }
             OpenCreateBookCommand = new RelayCommand(CreateBookHendler);
             OpenCreateJornalCommand = new RelayCommand(CreateJornalHendler);
             EditCommand = new RelayCommand(EditItemHandler);
-            DeleteCommand = new RelayCommand(DeleteItemHandler);
             DisconectedCommand = new RelayCommand(DisconectedHandler);
             SearchCommand = new RelayCommand(SearchItemsHandler);
             OrderByPriceCommand = new RelayCommand(OrderByPrice);
@@ -140,49 +143,76 @@ namespace Client.ViewModels
 
         private async void DeleteItemHandler()
         {
-
             try
             {
-                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
-                {
-                    throw new Exception("You need select item before delete!");
-                }
-
-                var json = JsonConvert.SerializeObject(SelectedIndex);
-
-                var response = await Consts.DeleteItemAsync(Client, SelectedIndex.ISBN, json);
-                if (response.IsSuccessStatusCode)
+                var success = await Consts.SelectetItemHandler(SelectedIndex, Client, "delete");
+                if (success)
                 {
                     MessageBox.Show($"{SelectedIndex.Title} was deleted!");
                     items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
                 }
-                else
-                    MessageBox.Show("Cant delete it , try again!");
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+                throw;
+            }
+
+        }
+        private async void BuyItemHandler()
+        {
+            try
+            {
+                var success = await Consts.SelectetItemHandler(SelectedIndex, Client, "buy");
+                if (success)
+                {
+                    MessageBox.Show($"You bought {SelectedIndex.Title} successfully");
+                    items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+                }
             }
             catch (Exception err)
             {
 
                 MessageBox.Show(err.Message);
             }
-
-
-
         }
 
         private void SearchItemsHandler()
         {
-            NavigateTool.Nav(new SearchPage());
+            try
+            {
+                NavigateTool.Nav(new SearchPage());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
         }
 
         private void CreateBookHendler()
         {
-            SelectedIndex = new Book();
-            NavigateTool.Nav(new CreateBook());
+            try
+            {
+                SelectedIndex = new Book();
+                NavigateTool.Nav(new CreateBook());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
         }
         private void CreateJornalHendler()
         {
-            SelectedIndex = new Jornal();
-            NavigateTool.Nav(new CreateJornalView());
+            try
+            {
+                SelectedIndex = new Jornal();
+                NavigateTool.Nav(new CreateJornalView());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+
         }
 
         private void EditItemHandler()
@@ -204,5 +234,6 @@ namespace Client.ViewModels
                 MessageBox.Show(err.Message);
             }
         }
+
     }
 }

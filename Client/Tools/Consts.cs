@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Client.Tools
 {
@@ -66,17 +67,54 @@ namespace Client.Tools
             return await client.GetAsync($"{url}/{method}");
         }
 
-        public static async Task<HttpResponseMessage> DeleteItemAsync(HttpClient client, Guid guid, string json)
+        public static async Task<HttpResponseMessage> SelecteditemPutAsync(HttpClient client, Guid guid, string json, string method)
         {
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            return await client.PutAsync($"{url}/{guid}", json, new JsonMediaTypeFormatter());
+            return await client.PutAsync($"{url}/{method}/{guid}", json, new JsonMediaTypeFormatter());
         }
 
 
         public static void Close()
         {
             NavigateTool.Nav(new MainLibraryPage());
+        }
+
+        public static async Task<bool> SelectetItemHandler(AbstractItem SelectedIndex, HttpClient Client, string method)
+        {
+
+            try
+            {
+                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
+                {
+                    throw new Exception("You need select item before delete!");
+                }
+
+                var json = JsonConvert.SerializeObject(SelectedIndex);
+
+                HttpResponseMessage response = new HttpResponseMessage();
+                if (method == "delete")
+                {
+                    response = await SelecteditemPutAsync(Client, SelectedIndex.ISBN, json, "delete");
+                }
+                if (method == "buy")
+                {
+                    response = await SelecteditemPutAsync(Client, SelectedIndex.ISBN, json, "buy");
+
+                }
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception err)
+            {
+
+                MessageBox.Show(err.Message);
+                return false;
+            }
         }
 
 

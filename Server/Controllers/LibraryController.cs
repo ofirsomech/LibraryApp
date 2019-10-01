@@ -111,8 +111,8 @@ namespace Server.Controllers
             }
         }
 
-        // PATCH: api/library/5
-        [HttpPut("{guid}")]
+        // PUT: api/library/5
+        [HttpPut("delete/{guid}")]
         public async Task<ActionResult<AbstractItem>> DeleteItem(Guid guid)
         {
             var item = await _libraryService.DeleteItemAsync(guid);
@@ -166,6 +166,23 @@ namespace Server.Controllers
                 return NotFound();
             }
         }
+
+
+
+        // PATCH: api/library/5
+        [HttpPut("buy/{guid}")]
+        public async Task<ActionResult<AbstractItem>> BuyItem(Guid guid)
+        {
+            var item = await _libraryService.BuyItem(guid);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(item);
+        }
+
 
     }
 }
