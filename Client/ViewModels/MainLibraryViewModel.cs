@@ -1,6 +1,6 @@
 ﻿using BL.Services.Classes;
 using BL.Services.Interfaces;
-
+using Client.Models;
 using Client.Tools;
 using Client.Views;
 using GalaSoft.MvvmLight;
@@ -44,7 +44,7 @@ namespace Client.ViewModels
         public static AbstractItem SelectedItem { get; set; }
 
         public static List<CategoryBook> Categories { get; set; }
-        public User ActiveUser { get; set; }
+        public LoginModel ActiveUser { get; set; }
 
         private bool _canEdit;
         public bool CanEdit
@@ -82,14 +82,14 @@ namespace Client.ViewModels
             ActiveUser = Consts.ActiveUser;
             GreetingNameText = $"Hello , {ActiveUser.Username}";
             GreetingTimeText = ManageTime.GetGreeting();
-            if (ActiveUser.Type == UserTypes.User)
+            if (ActiveUser.Type == Models.UserTypes.User)
             {
                 EditVisibility = Visibility.Collapsed;
                 DeleteAndRentText = "Buy";
                 SelectemItemCommand = new RelayCommand(BuyItemHandler);
 
             }
-            else if (ActiveUser.Type == UserTypes.Admin)
+            else if (ActiveUser.Type == Models.UserTypes.Admin)
             {
                 DeleteAndRentText = "Delete";
                 SelectemItemCommand = new RelayCommand(DeleteItemHandler);

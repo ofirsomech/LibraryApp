@@ -32,7 +32,7 @@ namespace Client.ViewModels
 
         public CreateJornalViewModel()
         {
-            if (MainLibraryViewModel.SelectedItem.Id != 0)
+            if (!String.IsNullOrEmpty(MainLibraryViewModel.SelectedItem.Title))
             {
                 HeaderText = $"Edit {MainLibraryViewModel.SelectedItem.Title}";
                 Jornal = (Jornal)MainLibraryViewModel.SelectedItem;

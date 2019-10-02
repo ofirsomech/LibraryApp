@@ -33,14 +33,14 @@ namespace Client.ViewModels
         public CreateBookViewModel()
         {
             Client = new HttpClient();
-            if (MainLibraryViewModel.SelectedItem.Id != 0)
+            if (!String.IsNullOrEmpty(MainLibraryViewModel.SelectedItem.Title))
             {
                 HeaderText = $"Edit {MainLibraryViewModel.SelectedItem.Title}";
                 Book = (Book)MainLibraryViewModel.SelectedItem;
                 BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditBookHendler);
 
             }
-            else if (MainLibraryViewModel.SelectedItem.Id == 0)
+            else if (String.IsNullOrEmpty(MainLibraryViewModel.SelectedItem.Title))
             {
                 HeaderText = $"Create Book";
 

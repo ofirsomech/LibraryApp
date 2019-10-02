@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace Client.ViewModels
 {
@@ -53,11 +54,9 @@ namespace Client.ViewModels
         public LoginViewModel()
         {
             client = new HttpClient();
-            //TextUser = "admin";
-            //Password = "1234";
             CanClick = true;
-            LoginCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Login);
-            RegisterCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Register);
+            LoginCommand = new RelayCommand(Login);
+            RegisterCommand =new RelayCommand(Register);
             PasswordChangedCommand = new RelayCommand<PasswordBox>(ExecutePasswordChangedCommand);
         }
 
@@ -89,7 +88,7 @@ namespace Client.ViewModels
                 if (response.IsSuccessStatusCode)
                 {
 
-                    Consts.ActiveUser = JsonConvert.DeserializeObject<User>(userJson);
+                    Consts.ActiveUser = JsonConvert.DeserializeObject<LoginModel>(userJson);
                     NavigateTool.NavFromLogin();
                 }
                 else
@@ -103,6 +102,8 @@ namespace Client.ViewModels
             {
 
                 MessageBox.Show(err.Message);
+                CanClick = true;
+
             }
         }
 
@@ -138,12 +139,18 @@ namespace Client.ViewModels
             catch (Exception err)
             {
                 Console.WriteLine(err.Message);
+                CanClick = true;
             }
 
 
         }
 
-
+        /// <summary>
+        /// Get user json 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private string GetUser(string username, string password)
         {
             var user = new LoginModel { Username = TextUser, Password = Password, Type = Models.UserTypes.User };

@@ -31,7 +31,7 @@
             <RowDefinition Height="120*"/>
 
         </Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding items}" SelectedItem="{Binding SelectedIndex , Mode=TwoWay}" Name="lst" Grid.Column="0"  Grid.RowSpan="5" Margin="0,0,0.333,0.333"    >
+        <ListView ItemsSource="{Binding items}" SelectedItem="{Binding SelectedItem , Mode=TwoWay}" Name="lst" Grid.Column="0"  Grid.RowSpan="5" Margin="0,0,0.333,0.333"    >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Serial Number" DisplayMemberBinding="{Binding ISBN}"/>

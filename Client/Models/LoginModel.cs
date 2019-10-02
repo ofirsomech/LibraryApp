@@ -10,7 +10,7 @@ namespace Client.Models
 
     class LoginModel
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public UserTypes Type { get; set; } = UserTypes.User;

@@ -77,10 +77,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Convertors\SampleMultiValueConverter.cs" />
+    <Compile Include="Models\AbstractItem.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Jornal.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\objType.cs" />
     <Compile Include="NewTestPage.xaml.cs">
       <DependentUpon>NewTestPage.xaml</DependentUpon>
     </Compile>
@@ -186,10 +190,6 @@
     <ProjectReference Include="..\BL-Client\BL.Client.csproj">
       <Project>{CB15DA5B-0E13-4659-8A44-52A9EC68FB14}</Project>
       <Name>BL.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{8db2e4b0-1244-4a84-9bbb-10840e69dadd}</Project>
-      <Name>Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
