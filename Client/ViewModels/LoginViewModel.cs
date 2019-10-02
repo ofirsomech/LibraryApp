@@ -75,7 +75,7 @@ namespace Client.ViewModels
 
 
                 CanClick = false;
-                var json = GetUser(TextUser, Password);
+                var json = GetUser(TextUser.ToLower(), Password);
                 var response = await PostUser("login", json);
                 var userJson = response.Content.ReadAsStringAsync().Result;
 
@@ -113,7 +113,7 @@ namespace Client.ViewModels
             try
             {
                 CanClick = false;
-                var json = GetUser(TextUser, Password);
+                var json = GetUser(TextUser.ToLower(), Password);
 
                 var response = await PostUser("create", json);
 

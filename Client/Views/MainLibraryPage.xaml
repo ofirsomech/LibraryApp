@@ -39,7 +39,7 @@
                     <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
                     <GridViewColumn Header="Month" DisplayMemberBinding="{Binding Month}"/>
                     <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
-                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price , StringFormat=N2}"/>
                     <GridViewColumn Header="Promotion" DisplayMemberBinding="{Binding PriceAfter , StringFormat=N2}"/>
                     <GridViewColumn Header="Print Date" DisplayMemberBinding="{Binding PrintDate ,  StringFormat='yyyy-MM-dd'}"/>
                     <GridViewColumn Header="Copies" DisplayMemberBinding="{Binding Copies}"/>
