@@ -40,8 +40,7 @@ namespace Server.Controllers
         [HttpGet("getid")]
         public ActionResult<int> GetId()
         {
-            int nextId = context.Users.Count() + 1;
-            return Ok(nextId);
+            return Ok();
         }
 
         // POST api/values
@@ -52,9 +51,6 @@ namespace Server.Controllers
             {
                 User user = JsonConvert.DeserializeObject<User>(json);
                 //user.Id = context.Users.Count() + 1;
-                context.Users.Add(user);
-                await context.SaveChangesAsync();
-                Console.WriteLine("done");
             }
             catch (Exception err)
             {
