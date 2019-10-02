@@ -41,6 +41,7 @@ namespace Client.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public ICommand FilterTextChangedCommand { get; set; }
 
 

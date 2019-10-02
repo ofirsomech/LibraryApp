@@ -59,7 +59,10 @@ namespace Client.ViewModels
             SubmitHanler("edit/jornal");
         }
 
-
+        /// <summary>
+        /// its update or jornal , depend which method sent to the function.
+        /// </summary>
+        /// <param name="method">"Create" or "Edit"</param>
         private async void SubmitHanler(string method)
         {
             try

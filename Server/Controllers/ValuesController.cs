@@ -12,7 +12,6 @@ namespace Server.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        LibraryDbContext context = new LibraryDbContext();
         // GET api/values
         [HttpGet]
         public  ActionResult<IEnumerable<string>> Get()

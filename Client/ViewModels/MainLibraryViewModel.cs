@@ -20,11 +20,18 @@ namespace Client.ViewModels
         public HttpClient Client { get; set; }
         public IManageTime ManageTime { get; set; }
 
-        public Visibility EditVisibility { get; set; } = Visibility.Visible;
         public string DeleteAndRentText { get; set; }
 
+        /// <summary>
+        /// Binding the name and greeting time message
+        /// </summary>
         public string GreetingNameText { get; set; }
         public string GreetingTimeText { get; set; }
+
+        /// <summary>
+        /// Binding change visibility in the UI (edit btn)
+        /// </summary>
+        public Visibility EditVisibility { get; set; } = Visibility.Visible;
 
 
         private ObservableCollection<AbstractItem> _items;
@@ -59,10 +66,10 @@ namespace Client.ViewModels
                 RaisePropertyChanged();
             }
         }
-        /// <summary>
-        /// Remove (Book/Jurnal)
-        /// </summary>
 
+        /// <summary>
+        /// Command binding to the UI
+        /// </summary>
         public ICommand OpenCreateBookCommand { get; set; }
         public ICommand OpenCreateJornalCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -105,34 +112,43 @@ namespace Client.ViewModels
             OrderByPublisherCommand = new RelayCommand(OrderByPublisher);
             OrderByPrintDateCommand = new RelayCommand(OrderByPrintDate);
         }
-
+        /// <summary>
+        /// Get all items from api 
+        /// </summary>
         private async void GetAllAbstractItems()
         {
             items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
 
         }
+
+        /// <summary>
+        /// Order by ObservableCollection(price , publisher , title , PrintDate)
+        /// </summary>
         private async void OrderByPrice()
         {
             items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "price");
         }
+
         private async void OrderByPublisher()
         {
             items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "publisher");
         }
+
         private async void OrderByTitle()
         {
             items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "title");
         }
+
         private async void OrderByPrintDate()
         {
             items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
         }
 
 
-
         private void DisconectedHandler()
         {
             ActiveUser = null;
+            Consts.ActiveUser = null;
             NavigateTool.DisconectedNav();
         }
 
@@ -154,6 +170,8 @@ namespace Client.ViewModels
             }
 
         }
+
+
         private async void BuyItemHandler()
         {
             try
@@ -171,6 +189,7 @@ namespace Client.ViewModels
                 MessageBox.Show(err.Message);
             }
         }
+
 
         private void SearchItemsHandler()
         {
@@ -196,6 +215,7 @@ namespace Client.ViewModels
                 MessageBox.Show(err.Message);
             }
         }
+
         private void CreateJornalHendler()
         {
             try

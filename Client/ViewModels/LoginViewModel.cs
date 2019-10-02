@@ -2,21 +2,14 @@
 using Client.Tools;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Models.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace Client.ViewModels
@@ -47,6 +40,7 @@ namespace Client.ViewModels
 
         public ICommand LoginCommand { get; set; }
         public ICommand RegisterCommand { get; set; }
+
         public RelayCommand<PasswordBox> PasswordChangedCommand { get; set; }
 
 
@@ -148,9 +142,6 @@ namespace Client.ViewModels
         /// <summary>
         /// Get user json 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
         private string GetUser(string username, string password)
         {
             var user = new LoginModel { Username = TextUser, Password = Password, Type = Models.UserTypes.User };

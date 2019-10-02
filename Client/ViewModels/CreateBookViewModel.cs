@@ -64,9 +64,9 @@ namespace Client.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// its update or book , depend which method sent to the function.
         /// </summary>
-        /// <param name="method"></param>
+        /// <param name="method">"Create" or "Edit"</param>
         private async void SubmitHanler(string method)
         {
             try
@@ -96,7 +96,7 @@ namespace Client.ViewModels
                 {
                     throw new Exception("You need enter a valid copies(more than 1). Pleate try again!");
                 }
-                if (book.Discount<0 || book.Discount > 100) 
+                if (book.Discount < 0 || book.Discount > 100)
                 {
                     throw new Exception("You need enter a valid discount(between 0-100). Pleate try again!");
 
