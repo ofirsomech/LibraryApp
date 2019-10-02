@@ -29,5 +29,9 @@ namespace Client.Tools
         {
             Application.Current.MainWindow.Content = new LoginView();
         }
+        public static void Close()
+        {
+            NavigateTool.Nav(new MainLibraryPage());
+        }
     }
 }

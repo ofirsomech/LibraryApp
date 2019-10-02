@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace Client.ViewModels
 {
@@ -31,40 +32,40 @@ namespace Client.ViewModels
 
         public CreateJornalViewModel()
         {
-            if (MainLibraryViewModel.SelectedIndex.Id != 0)
+            if (MainLibraryViewModel.SelectedItem.Id != 0)
             {
-                HeaderText = $"Edit {MainLibraryViewModel.SelectedIndex.Title}";
-                Jornal = (Jornal)MainLibraryViewModel.SelectedIndex;
-                JornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditJornalHandler);
+                HeaderText = $"Edit {MainLibraryViewModel.SelectedItem.Title}";
+                Jornal = (Jornal)MainLibraryViewModel.SelectedItem;
+                JornalCommand = new RelayCommand(EditJornalHandler);
             }
             else
             {
                 HeaderText = "Create Jornal";
                 Jornal = new Jornal();
                 Jornal.PrintDate = DateTime.Now;
-                JornalCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateJornalHandler);
+                JornalCommand = new RelayCommand(CreateJornalHandler);
             }
-            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Consts.Close);
+            CloseCommand = new RelayCommand(NavigateTool.Close);
         }
 
 
         void CreateJornalHandler()
         {
-            SubmitHenler("create/jornal");
+            SubmitHanler("create/jornal");
         }
 
         void EditJornalHandler()
         {
-            SubmitHenler("edit/jornal");
+            SubmitHanler("edit/jornal");
         }
 
 
-        private async void SubmitHenler(string method)
+        private async void SubmitHanler(string method)
         {
             try
             {
                 var jornal = this.Jornal;
-                if (jornal.Price == 0 && String.IsNullOrEmpty(jornal.Title) && String.IsNullOrWhiteSpace(jornal.Title) && String.IsNullOrEmpty(jornal.Month) && String.IsNullOrWhiteSpace(jornal.Month))
+                if (jornal.Price <= 0 && String.IsNullOrEmpty(jornal.Title) && String.IsNullOrWhiteSpace(jornal.Title) && String.IsNullOrEmpty(jornal.Month) && String.IsNullOrWhiteSpace(jornal.Month))
                 {
                     throw new Exception("You need enter a valid title , price and month. Pleate try again!");
                 }
@@ -76,7 +77,7 @@ namespace Client.ViewModels
                 {
                     throw new Exception("You need enter a valid month. Pleate try again!");
                 }
-                if (jornal.Price == 0)
+                if (jornal.Price <= 0)
                 {
                     throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
                 }
@@ -84,9 +85,9 @@ namespace Client.ViewModels
                 var json = JsonConvert.SerializeObject(jornal);
                 HttpResponseMessage response = new HttpResponseMessage();
                 if (method == "edit/jornal")
-                    response = await Consts.EditItem(Client, method, json);
+                    response = await ApiService.EditItem(Client, method, json);
                 else if (method == "create/jornal")
-                    response = await Consts.PostItem(Client, method, json);
+                    response = await ApiService.PostItem(Client, method, json);
 
                 if (response.IsSuccessStatusCode)
                     NavigateTool.Nav(new MainLibraryPage());

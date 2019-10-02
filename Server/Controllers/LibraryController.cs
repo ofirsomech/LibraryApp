@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using Newtonsoft.Json;
@@ -55,19 +54,19 @@ namespace Server.Controllers
             }
         }
 
-        // GET: api/library/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetBook(int id)
-        {
-            var item = await _libraryService.GetItemAsync(id);
+        //// GET: api/library/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<User>> GetBook(int id)
+        //{
+        //    var item = await _libraryService.GetItemAsync(id);
 
-            if (item == null)
-            {
-                return NotFound();
-            }
+        //    if (item == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(item);
-        }
+        //    return Ok(item);
+        //}
 
         // POST: api/library/create/book
         [HttpPost("Create/book")]

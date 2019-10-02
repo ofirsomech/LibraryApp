@@ -1,18 +1,14 @@
 ﻿using BL.Services.Classes;
 using BL.Services.Interfaces;
+
 using Client.Tools;
 using Client.Views;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Models.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
@@ -45,8 +41,7 @@ namespace Client.ViewModels
             }
         }
 
-        public static AbstractItem SelectedIndex { get; set; }
-
+        public static AbstractItem SelectedItem { get; set; }
 
         public static List<CategoryBook> Categories { get; set; }
         public User ActiveUser { get; set; }
@@ -90,7 +85,6 @@ namespace Client.ViewModels
             if (ActiveUser.Type == UserTypes.User)
             {
                 EditVisibility = Visibility.Collapsed;
-                //DeleteVisibility = Visibility.Collapsed;
                 DeleteAndRentText = "Buy";
                 SelectemItemCommand = new RelayCommand(BuyItemHandler);
 
@@ -114,23 +108,24 @@ namespace Client.ViewModels
 
         private async void GetAllAbstractItems()
         {
-            items = await Tools.Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+            items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+
         }
         private async void OrderByPrice()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "price");
+            items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "price");
         }
         private async void OrderByPublisher()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "publisher");
+            items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "publisher");
         }
         private async void OrderByTitle()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "title");
+            items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "title");
         }
         private async void OrderByPrintDate()
         {
-            items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+            items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
         }
 
 
@@ -145,11 +140,11 @@ namespace Client.ViewModels
         {
             try
             {
-                var success = await Consts.SelectetItemHandler(SelectedIndex, Client, "delete");
+                var success = await ApiService.SelectetItemHandler(SelectedItem, Client, "delete");
                 if (success)
                 {
-                    MessageBox.Show($"{SelectedIndex.Title} was deleted!");
-                    items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+                    MessageBox.Show($"{SelectedItem.Title} was deleted!");
+                    items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
                 }
             }
             catch (Exception err)
@@ -163,11 +158,11 @@ namespace Client.ViewModels
         {
             try
             {
-                var success = await Consts.SelectetItemHandler(SelectedIndex, Client, "buy");
+                var success = await ApiService.SelectetItemHandler(SelectedItem, Client, "buy");
                 if (success)
                 {
-                    MessageBox.Show($"You bought {SelectedIndex.Title} successfully");
-                    items = await Consts.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
+                    MessageBox.Show($"You bought {SelectedItem.Title} successfully");
+                    items = await ApiService.GetAllAvialiabeItems(Client, items, "book", "jornal", "printDate");
                 }
             }
             catch (Exception err)
@@ -193,7 +188,7 @@ namespace Client.ViewModels
         {
             try
             {
-                SelectedIndex = new Book();
+                SelectedItem = new Book();
                 NavigateTool.Nav(new CreateBook());
             }
             catch (Exception err)
@@ -205,7 +200,7 @@ namespace Client.ViewModels
         {
             try
             {
-                SelectedIndex = new Jornal();
+                SelectedItem = new Jornal();
                 NavigateTool.Nav(new CreateJornalView());
             }
             catch (Exception err)
@@ -219,13 +214,13 @@ namespace Client.ViewModels
         {
             try
             {
-                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
+                if (SelectedItem == null || String.IsNullOrEmpty(SelectedItem.Title))
                 {
                     throw new Exception("You need select item before edit!");
                 }
-                if (SelectedIndex.GetType() == typeof(Book))
+                if (SelectedItem.GetType() == typeof(Book))
                     NavigateTool.Nav(new CreateBook());
-                if (SelectedIndex.GetType() == typeof(Jornal))
+                if (SelectedItem.GetType() == typeof(Jornal))
                     NavigateTool.Nav(new CreateJornalView());
             }
             catch (Exception err)

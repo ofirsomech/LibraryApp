@@ -33,14 +33,14 @@ namespace Client.ViewModels
         public CreateBookViewModel()
         {
             Client = new HttpClient();
-            if (MainLibraryViewModel.SelectedIndex.Id != 0)
+            if (MainLibraryViewModel.SelectedItem.Id != 0)
             {
-                HeaderText = $"Edit {MainLibraryViewModel.SelectedIndex.Title}";
-                Book = (Book)MainLibraryViewModel.SelectedIndex;
+                HeaderText = $"Edit {MainLibraryViewModel.SelectedItem.Title}";
+                Book = (Book)MainLibraryViewModel.SelectedItem;
                 BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditBookHendler);
 
             }
-            else if (MainLibraryViewModel.SelectedIndex.Id == 0)
+            else if (MainLibraryViewModel.SelectedItem.Id == 0)
             {
                 HeaderText = $"Create Book";
 
@@ -48,28 +48,32 @@ namespace Client.ViewModels
                 Book.PrintDate = DateTime.Now;
                 BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateBookHandler);
             }
-            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(Consts.Close);
+            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(NavigateTool.Close);
         }
 
 
         private void CreateBookHandler()
         {
-            SubmitHenler("create/book");
+            SubmitHanler("create/book");
         }
 
         private void EditBookHendler()
         {
-            SubmitHenler($"edit/book");
-            MainLibraryViewModel.SelectedIndex = null;
+            SubmitHanler($"edit/book");
+            MainLibraryViewModel.SelectedItem = null;
         }
 
-        private async void SubmitHenler(string method)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="method"></param>
+        private async void SubmitHanler(string method)
         {
             try
             {
                 var book = this.Book;
-                if (book.Price == 0 &&
-                    book.Copies == 0 &&
+                if (book.Price <= 0 &&
+                    book.Copies <= 0 &&
                     String.IsNullOrWhiteSpace(book.Title) && String.IsNullOrEmpty(book.Title) &&
                     String.IsNullOrWhiteSpace(book.Publisher) && String.IsNullOrEmpty(book.Publisher))
                 {
@@ -84,11 +88,11 @@ namespace Client.ViewModels
                 {
                     throw new Exception("You need enter a valid publisher name. Pleate try again!");
                 }
-                if (book.Price == 0)
+                if (book.Price <= 0)
                 {
                     throw new Exception("You need enter a valid price(more than 1). Pleate try again!");
                 }
-                if (book.Copies == 0)
+                if (book.Copies <= 0)
                 {
                     throw new Exception("You need enter a valid copies(more than 1). Pleate try again!");
                 }
@@ -101,9 +105,9 @@ namespace Client.ViewModels
                 var json = JsonConvert.SerializeObject(book);
                 HttpResponseMessage response = new HttpResponseMessage();
                 if (method == "edit/book")
-                    response = await Consts.EditItem(Client, method, json);
+                    response = await ApiService.EditItem(Client, method, json);
                 else if (method == "create/book")
-                    response = await Consts.PostItem(Client, method, json);
+                    response = await ApiService.PostItem(Client, method, json);
 
                 if (response.IsSuccessStatusCode)
                     NavigateTool.Nav(new MainLibraryPage());
