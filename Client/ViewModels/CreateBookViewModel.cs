@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace Client.ViewModels
 {
@@ -37,7 +38,7 @@ namespace Client.ViewModels
             {
                 HeaderText = $"Edit {MainLibraryViewModel.SelectedItem.Title}";
                 Book = (Book)MainLibraryViewModel.SelectedItem;
-                BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(EditBookHendler);
+                BookCommand = new RelayCommand(EditBookHendler);
 
             }
             else if (String.IsNullOrEmpty(MainLibraryViewModel.SelectedItem.Title))
@@ -46,9 +47,9 @@ namespace Client.ViewModels
 
                 Book = new Book();
                 Book.PrintDate = DateTime.Now;
-                BookCommand = new GalaSoft.MvvmLight.Command.RelayCommand(CreateBookHandler);
+                BookCommand = new RelayCommand(CreateBookHandler);
             }
-            CloseCommand = new GalaSoft.MvvmLight.Command.RelayCommand(NavigateTool.Close);
+            CloseCommand = new RelayCommand(NavigateTool.Close);
         }
 
 

@@ -100,12 +100,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\objType.cs" />
-    <Compile Include="NewTestPage.xaml.cs">
-      <DependentUpon>NewTestPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Tools\ApiService.cs" />
     <Compile Include="Tools\Consts.cs" />
     <Compile Include="Tools\NavigateTool.cs" />
@@ -140,14 +134,6 @@
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="NewTestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CreateBook.xaml">
       <SubType>Designer</SubType>

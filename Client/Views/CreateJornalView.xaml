@@ -33,7 +33,7 @@
             <TextBlock Height="23" HorizontalAlignment="Left" Margin="68,75,0,0" Name="textBlockPassword" Text="Month:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="2"  />
             <TextBlock Height="23" HorizontalAlignment="Left" Margin="68,104,0,0"  Text="Price" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="2" />
             <TextBox Text="{Binding Jornal.Title}" Height="23" HorizontalAlignment="Left" Margin="27.5,20,0,0" Name="txtName" VerticalAlignment="Top" Width="222" Grid.Column="1" />
-            <DatePicker Text="{Binding Jornal.PrintDate}" Height="23" HorizontalAlignment="Left" Margin="28,48,0,0" Name="txtPrintDate" VerticalAlignment="Top" Width="222" Grid.Column="1">
+            <DatePicker Text="{Binding Jornal.PrintDate , Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="28,48,0,0" Name="txtPrintDate" VerticalAlignment="Top" Width="222" Grid.Column="1">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="IsReadOnly" Value="True"/>

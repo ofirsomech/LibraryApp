@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Models
 {
-    public enum CategoryBook { Horror, Comedy, Army, Action, Warior };
+    public enum CategoryBook { Horror, Comedy, Army, Action, Warior, Drama, Flowers, Games, Clinical, Mysteries, Crime, Animals };
+
     [Serializable]
     public abstract class AbstractItem
     {
