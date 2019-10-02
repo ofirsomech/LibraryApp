@@ -54,7 +54,6 @@ namespace Client.Tools
 
         public static async Task<HttpResponseMessage> GetItemsFromApi(HttpClient client, string method)
         {
-            //client.BaseAddress = new Uri($"{url}/{method}");
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             return await client.GetAsync($"{Consts.url}/{method}");
@@ -74,10 +73,11 @@ namespace Client.Tools
 
             try
             {
-                if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
-                {
-                    throw new Exception("You need select item before delete!");
-                }
+                    if (SelectedIndex == null || String.IsNullOrEmpty(SelectedIndex.Title))
+                    {
+                        throw new Exception($"You need select item before {method}!");
+                    }
+
 
                 var json = JsonConvert.SerializeObject(SelectedIndex);
 

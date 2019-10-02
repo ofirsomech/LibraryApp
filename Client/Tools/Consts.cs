@@ -16,7 +16,5 @@ namespace Client.Tools
     {
         public static User ActiveUser { get; set; }
         public static string url = "https://localhost:44384/api/library";
-
-
     }
 }

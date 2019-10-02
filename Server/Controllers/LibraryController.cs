@@ -54,20 +54,6 @@ namespace Server.Controllers
             }
         }
 
-        //// GET: api/library/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<User>> GetBook(int id)
-        //{
-        //    var item = await _libraryService.GetItemAsync(id);
-
-        //    if (item == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(item);
-        //}
-
         // POST: api/library/create/book
         [HttpPost("Create/book")]
         public async Task<ActionResult<bool>> CreateBook([FromBody] string json)
@@ -89,7 +75,7 @@ namespace Server.Controllers
             }
         }
 
-        // POST: api/library/create
+        // POST: api/library/create/jornal
         [HttpPost("Create/jornal")]
         public async Task<ActionResult<bool>> CreateJornal([FromBody] string json)
         {
@@ -110,7 +96,7 @@ namespace Server.Controllers
             }
         }
 
-        // PUT: api/library/5
+        // PUT: api/library/{guid}
         [HttpPut("delete/{guid}")]
         public async Task<ActionResult<AbstractItem>> DeleteItem(Guid guid)
         {
@@ -125,7 +111,7 @@ namespace Server.Controllers
         }
 
 
-
+        // PUT: api/library/edit/book
         [HttpPut("edit/book")]
         public async Task<ActionResult<bool>> EditBook([FromBody] string json)
         {
@@ -146,6 +132,7 @@ namespace Server.Controllers
             }
         }
 
+        // PUT: api/library/edit/jornal
         [HttpPut("edit/jornal")]
         public async Task<ActionResult<bool>> EditJornal([FromBody] string json)
         {
@@ -166,9 +153,7 @@ namespace Server.Controllers
             }
         }
 
-
-
-        // PATCH: api/library/5
+        // PATCH: api/library/buy/{guid}
         [HttpPut("buy/{guid}")]
         public async Task<ActionResult<AbstractItem>> BuyItem(Guid guid)
         {
@@ -181,7 +166,5 @@ namespace Server.Controllers
 
             return Ok(item);
         }
-
-
     }
 }
